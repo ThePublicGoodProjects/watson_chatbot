@@ -2,6 +2,8 @@
 
 Built using watston simple assistant api (nodejs sdk): (https://github.com/watson-developer-cloud/assistant-simple).
 
+**Currently in Beta - This was developed as a proof of concept and is under development**
+
 ## Getting Started
 
 1. In the application folder, copy the *.env.example* file and create a file called *.env*
