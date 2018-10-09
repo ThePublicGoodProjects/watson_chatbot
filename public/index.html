@@ -1,0 +1,34 @@
+<html>
+<head>
+    <base href="/">
+    <title>Layla Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:image" content="conversation.svg"/>
+    <meta property="og:title" content="Conversation Chat Simple"/>
+    <meta property="og:description" content="Sample application that shows how to use the Watson Assistant API to identify user intents"/>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.0-rc.3/dist/css/foundation.min.css"
+          integrity="sha256-b2khkeAav/7kTh0Bs5h1Xw1kqGL56SziJ5zk6bEvnAw= sha384-7nP0F9FVCI9Qg1SfsjHWQd+4ksCAxlF5pibRyPGxwn7NJpu1XuSaOoMh8JHIDSdk sha512-Rcgo7Zj9clxZoGtt4CBj1aEtCL9gBd64nYl3hkKEuWDwtK7hKY6c4D5vL4njDseuz31u1WWSM42SbvYe/3CZYQ=="
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+<div id="contentParent" class="responsive-columns-wrapper">
+    <div id="chat-column-holder" class="responsive-column content-column">
+        <div class="chat-column">
+            <div id="scrollingChat"></div>
+            <p class="user-typing" id="user-typing-field"></p>
+            <label for="textInput" class="inputOutline">
+                <input id="textInput" class="input responsive-column" placeholder="Type something" type="text" onkeydown="ConversationPanel.inputKeyDown(event, this)"
+                       autofocus>
+            </label>
+        </div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/watson-developer-cloud/watson-developer-cloud.github.io/master/analytics.js"></script>
+</body>
+</html>
