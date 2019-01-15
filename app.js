@@ -52,9 +52,9 @@ app.post('/api/message', function (req, res) {
             return res.status(err.code || 500).json(err);
         }
 
-        if (payload.context.metadata && payload.context.metadata.user_id) {
-            userId = payload.context.metadata.user_id;
-        }
+        // if (payload.context.metadata && payload.context.metadata.user_id) {
+        //     userId = payload.context.metadata.user_id;
+        // }
 
         humanMessageForDashbot = {
             text  : payload.input.text || '',
@@ -79,29 +79,29 @@ function updateMessage(input, response) {
     if (!response.output) {
         response.output = {};
     } else {
-        if (response.context.metadata && response.context.metadata.user_id) {
-            userId = response.context.metadata.user_id;
-        }
+        // if (response.context.metadata && response.context.metadata.user_id) {
+        //     userId = response.context.metadata.user_id;
+        // }
 
-        intent = (response.intents && response.intents.length) ? response.intents[0] : {};
-
-        if (response.entities && response.entities.length) {
-            entities = response.entities.map(function (entity) {
-                return {
-                    name : entity.entity,
-                    value: entity.value
-                };
-            });
-        }
+        // intent = (response.intents && response.intents.length) ? response.intents[0] : {};
+        //
+        // if (response.entities && response.entities.length) {
+        //     entities = response.entities.map(function (entity) {
+        //         return {
+        //             name : entity.entity,
+        //             value: entity.value
+        //         };
+        //     });
+        // }
 
         let watsonMessageForDashbot = {
             text       : response.output.text[0] || {},
-            userId     : userId,
-            intent     : {
-                name  : intent.intent || '',
-                inputs: entities
-            },
-            payloadJson: response
+            userId     : userId
+            // intent     : {
+            //     name  : intent.intent || '',
+            //     inputs: entities
+            // },
+            // payloadJson: response
         };
         dashbot.logOutgoing(watsonMessageForDashbot);
         return response;
