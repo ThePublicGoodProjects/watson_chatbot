@@ -21,8 +21,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dashbot": "^10.2.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "uuid": "^3.3.2",
     "watson-developer-cloud": "^3.10.0"
   },
   "publishConfig": {

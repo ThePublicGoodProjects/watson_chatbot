@@ -77,4 +77,5 @@ var Common = (function () {
             callback.call(null, list[i]);
         }
     }
+
 }());

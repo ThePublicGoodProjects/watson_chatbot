@@ -27,7 +27,7 @@ var ConversationPanel = (function () {
     // Initialize the module
     function init() {
         chatUpdateSetup();
-        Api.sendRequest('', null);
+        Api.sendRequest('', {bot_type: 'layla'});
         setupInputBox();
     }
 
@@ -136,7 +136,7 @@ var ConversationPanel = (function () {
         }
     }
 
-    // Recurisive function to add responses to the chat area
+    // Recursive function to add responses to the chat area
     function setResponse(responses, isUser, chatBoxElement, index, isTop) {
         if (index < responses.length) {
             var res = responses[index];
@@ -230,15 +230,14 @@ var ConversationPanel = (function () {
     }
 
     function getResponse(responses, gen) {
-        var title = '';
-        if (gen.hasOwnProperty('title')) {
-            title = gen.title;
-        }
+        var title = gen.title || '',
+            description = gen.description || '';
+
         if (gen.response_type === 'image') {
-            var img = '<div><img src="' + gen.source + '" width="300"></div>';
+            var img = '<div><img src="' + gen.source + '"></div>';
             responses.push({
                 type     : gen.response_type,
-                innerhtml: title + img
+                innerhtml: title + img + description
             });
         } else if (gen.response_type === 'text') {
             responses.push({
