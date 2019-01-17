@@ -1,9 +1,9 @@
 // The Api module is designed to handle all interactions with the server
 
 var Api = (function () {
-    var requestPayload;
-    var responsePayload;
-    var messageEndpoint = location.host.match(/^localhost/) ? '/api/message' : 'https://pgp-layla-test.mybluemix.net/api/message';
+    var requestPayload,
+        responsePayload,
+        messageEndpoint = '/api/message';
     // var messageEndpoint = 'https://pgp-layla-test.mybluemix.net/api/message';
 
     // Publicly accessible methods defined
