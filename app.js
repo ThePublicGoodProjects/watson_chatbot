@@ -4,17 +4,28 @@ let express     = require('express'), // app server
     bodyParser  = require('body-parser'), // parser for post requests
     AssistantV1 = require('watson-developer-cloud/assistant/v1'), // watson sdk
     dashbot,
+    assistant,
     app         = express(),
     workspaceId = process.env.WORKSPACE_ID || '',
+    hasWatsonCredentials = function () {
+        if (process.env.WORKSPACE_ID) {
+            return process.env.ASSISTANT_USERNAME && process.env.ASSISTANT_PASSWORD;
+        }
 
+        return false;
+    },
+    userId      = '1';
+
+
+if (hasWatsonCredentials()) {
 
     // Create the service wrapper
     assistant = new AssistantV1({
         version: '2018-07-10'
-    }),
+    });
+}
 
-    // Fallback user id
-    userId    = '1';
+// Fallback user id
 
 if (process.env.DASHBOT_API_KEY) {
     dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).generic;
@@ -37,7 +48,7 @@ app.post('/api/message', function (req, res) {
     let workspace = workspaceId || false,
         payload;
 
-    if (! workspace) {
+    if (!workspace) {
         return res.json({
             'output': {
                 'text': 'The app has not been configured with a <b>WORKSPACE_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
@@ -102,8 +113,8 @@ function updateMessage(input, response) {
         // }
 
         let watsonMessageForDashbot = {
-            text       : response.output.text[0] || {},
-            userId     : userId
+            text  : response.output.text[0] || {},
+            userId: userId
             // intent     : {
             //     name  : intent.intent || '',
             //     inputs: entities
