@@ -71,6 +71,7 @@ app.post('/api/message', function (req, res) {
             return res.status(err.code || 500).json(err);
         }
 
+        userId = '';
         if (payload.context.metadata && payload.context.metadata.user_id) {
             userId = payload.context.metadata.user_id;
         }
@@ -98,6 +99,8 @@ function updateMessage(input, response) {
     if (!response.output) {
         response.output = {};
     } else {
+
+        userId = '';
         if (response.context.metadata && response.context.metadata.user_id) {
             userId = response.context.metadata.user_id;
         }
