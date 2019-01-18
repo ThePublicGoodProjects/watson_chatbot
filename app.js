@@ -59,7 +59,8 @@ app.post('/api/message', function (req, res) {
     payload = {
         workspace_id: workspace,
         context     : req.body.context || {},
-        input       : req.body.input || {}
+        input       : req.body.input || {},
+        alternate_intents: (process.env.ASSISTANT_ALTERNATE_INTENTS && process.env.ASSISTANT_ALTERNATE_INTENTS === 'true') || false
     };
 
     // Send the input to the assistant service

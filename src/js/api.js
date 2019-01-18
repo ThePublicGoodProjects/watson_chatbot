@@ -4,7 +4,6 @@ var Api = (function () {
     var requestPayload,
         responsePayload,
         messageEndpoint = '/api/message';
-    // var messageEndpoint = 'https://pgp-layla-test.mybluemix.net/api/message';
 
     // Publicly accessible methods defined
     return {
