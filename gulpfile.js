@@ -19,6 +19,7 @@ const
     uglify                = require('gulp-uglify'),
     htmlmin               = require('gulp-htmlmin'),
     concat                = require('gulp-concat'),
+    eslint                = require('gulp-eslint'),
     autoprefixer          = require('gulp-autoprefixer'),
     config                = {
         production: !!util.env.production || !!util.env.prod
@@ -38,9 +39,23 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./public/css'));
 });
 
+gulp.task('lint', function () {
+    return gulp.src(['./src/**/*.js'])
+        .pipe(eslint({
+            'rules': {
+                'quotes': [1, 'single'],
+                'semi'  : [1, 'always']
+            }
+        }))
+        .pipe(eslint.format())
+        // Brick on failure to be super strict
+        .pipe(eslint.failOnError());
+});
+
 gulp.task('scripts', function () {
     return gulp.src(['./src/**/*.js'])
-        .pipe(config.production ? uglify('app.js') : concat('app.js'))
+        .pipe(concat('app.js'))
+        .pipe(config.production ? uglify() : util.noop())
         .pipe(gulp.dest('./public/js'));
 });
 
@@ -55,10 +70,10 @@ gulp.task('pages', function () {
 
 gulp.task('watch', function () {
     gulp.watch('./src/sass/**/*.scss', gulp.series('sass'));
-    gulp.watch('./src/js/**/*.js', gulp.series('scripts'));
+    gulp.watch('./src/js/**/*.js', gulp.series('scripts', 'lint'));
     gulp.watch('./src/pages/**/*.html', gulp.series('pages'));
 });
 
-gulp.task('default', gulp.series('scripts', 'sass', 'pages'));
+gulp.task('default', gulp.series('scripts', 'lint', 'sass', 'pages'));
 gulp.task('watch', gulp.series('default', 'watch'));
 
