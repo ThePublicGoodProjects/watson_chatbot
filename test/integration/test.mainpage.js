@@ -32,14 +32,14 @@ casper.test.begin('Watson Assistant simple Demo', 5, function suite(test) {
         casper.waitForSelector('.from-user', function () {
             test.assertExists('.message-inner', 'Message sent');
             test.assertTextExists('hi', 'Message in bubble');
-            casper.waitForText('Hi! My name is Layla and I\'m a birth control bot');
+            casper.waitForText('Hi! I\'m Layla and I\'m here');
         });
     }
 
     casper.start(baseHost, function () {
         casper.test.comment('Starting Testing');
         test.assertHttpStatus(200, 'assistant-simple is up');
-        test.assertTitle('Watson Assistant Chat App', 'Title is correct');
+        test.assertTitle('Layla Chatbot', 'Title is correct');
 
         testWelcomeMessageExists();
         testEnterMessageClick();

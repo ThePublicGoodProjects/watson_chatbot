@@ -91,8 +91,8 @@ app.post('/api/message', function (req, res) {
  */
 function updateMessage(input, response) {
     let responseText = null,
-        intent,
-        entities     = [];
+        // entities     = [],
+        intent;
 
     if (!response.output) {
         response.output = {};

@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "build": "gulp",
+    "watch": "gulp watch",
+    "build-prod": "gulp --prod",
     "test-integration": "casperjs test ./test/integration/test.*.js",
     "test-integration-runner": "NODE_ENV=test node casper-runner.js",
     "test": "npm run lint && npm run test-integration-runner",
@@ -38,8 +40,13 @@
     "cryptiles": "^4.1.2",
     "eslint": "^5.1.0",
     "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
     "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.1",
+    "gulp-htmlmin": "^5.0.1",
     "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.1",
+    "gulp-util": "^3.0.8",
     "jest": "^23.4.1",
     "phantomjs-prebuilt": "^2.1.16",
     "supertest": "^3.1.0"
