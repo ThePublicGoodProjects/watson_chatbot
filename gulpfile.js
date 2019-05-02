@@ -13,7 +13,7 @@ const
         'bb >= 10'
     ],
     gulp                  = require('gulp'),
-    sass                  = require('gulp-sass'),
+    sass                  = require('sass'),
     csso                  = require('gulp-csso'),
     util                  = require('gulp-util'),
     uglify                = require('gulp-uglify'),
@@ -21,15 +21,20 @@ const
     concat                = require('gulp-concat'),
     eslint                = require('gulp-eslint'),
     autoprefixer          = require('gulp-autoprefixer'),
+    fs = require('fs'),
     config                = {
         production: !!util.env.production || !!util.env.prod
     };
 
 gulp.task('sass', function () {
-    return gulp.src('./src/sass/app.scss')
-        .pipe(sass({
-            includePaths: ['node_modules']
-        }).on('error', sass.logError))
+    const result = sass.renderSync({
+        includePaths: ['node_modules'],
+        file: './src/sass/app.scss'
+        // outFile: './public/css/app.css'
+    });
+    fs.writeFileSync('./public/css/app.css', result.css);
+
+    return gulp.src('./public/css/app.css')
         .pipe(autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe(config.production ? csso() : csso({
             restructure: false,

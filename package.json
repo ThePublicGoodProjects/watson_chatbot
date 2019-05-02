@@ -45,11 +45,11 @@
     "gulp-csso": "^3.0.1",
     "gulp-eslint": "^5.0.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
     "jest": "^24.7.1",
     "phantomjs-prebuilt": "^2.1.16",
+    "sass": "^1.19.0",
     "supertest": "^3.4.2"
   }
 }
