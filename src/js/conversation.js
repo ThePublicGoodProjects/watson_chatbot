@@ -252,7 +252,7 @@ var ConversationPanel = (function () {
             });
         } else if (gen.response_type === 'option') {
             var preference = 'text';
-            if (gen.hasOwnProperty('preference')) {
+            if ('preference' in gen) {
                 preference = gen.preference;
             }
 
@@ -273,8 +273,8 @@ var ConversationPanel = (function () {
 
         var responses = [];
 
-        if (newPayload.hasOwnProperty('output')) {
-            if (newPayload.output.hasOwnProperty('generic')) {
+        if ('output' in newPayload) {
+            if ('generic' in newPayload.output) {
 
                 var generic = newPayload.output.generic;
 
@@ -282,7 +282,7 @@ var ConversationPanel = (function () {
                     getResponse(responses, gen);
                 });
             }
-        } else if (newPayload.hasOwnProperty('input')) {
+        } else if ('input' in newPayload) {
             var input = '';
             textArray.forEach(function (msg) {
                 input += msg + ' ';

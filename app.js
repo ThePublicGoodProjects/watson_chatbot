@@ -1,27 +1,38 @@
 'use strict';
 
-let express     = require('express'), // app server
-    bodyParser  = require('body-parser'), // parser for post requests
-    AssistantV1 = require('watson-developer-cloud/assistant/v1'), // watson sdk
+let express              = require('express'), // app server
+    bodyParser           = require('body-parser'), // parser for post requests
+    // AssistantV1 = require('watson-developer-cloud/assistant/v1'), // watson sdk
+    AssistantV1          = require('ibm-watson/assistant/v1'),
+    {IamAuthenticator}   = require('ibm-watson/auth'),
     dashbot,
     assistant,
-    app         = express(),
-    workspaceId = process.env.WORKSPACE_ID || '',
+    app                  = express(),
+
+    workspaceId          = process.env.WORKSPACE_ID || '',
+    assistantApiKey      = process.env.ASSISTANT_IAM_APIKEY || false,
+    assistantUrl         = process.env.ASSISTANT_IAM_URL || false,
+    assistantVersion     = process.env.ASSISTANT_VERSION || false,
+
     hasWatsonCredentials = function () {
-        if (process.env.WORKSPACE_ID) {
-            return process.env.ASSISTANT_USERNAME && process.env.ASSISTANT_PASSWORD;
+        if (process.env.ASSISTANT_VERSION) {
+            return process.env.ASSISTANT_IAM_APIKEY && process.env.ASSISTANT_IAM_URL;
         }
 
         return false;
     },
-    userId      = process.env.TEST_USER_ID || '';
+    userId               = process.env.TEST_USER_ID || '';
 
 
 if (hasWatsonCredentials()) {
 
     // Create the service wrapper
     assistant = new AssistantV1({
-        version: '2018-07-10'
+        version      : assistantVersion,
+        authenticator: new IamAuthenticator({
+            apikey: assistantApiKey
+        }),
+        url          : assistantUrl
     });
 }
 
@@ -57,19 +68,20 @@ app.post('/api/message', function (req, res) {
     }
 
     payload = {
-        workspace_id: workspace,
-        context     : req.body.context || {},
-        input       : req.body.input || {},
-        alternate_intents: (process.env.ASSISTANT_ALTERNATE_INTENTS && process.env.ASSISTANT_ALTERNATE_INTENTS === 'true') || false
+        workspaceId     : workspace,
+        context         : req.body.context || {},
+        input           : req.body.input || {},
+        alternateIntents: (process.env.ASSISTANT_ALTERNATE_INTENTS && process.env.ASSISTANT_ALTERNATE_INTENTS === 'true') || false
     };
 
     // Send the input to the assistant service
-    assistant.message(payload, function (err, data) {
+    assistant.message(payload).then(response => {
         let humanMessageForDashbot;
 
-        if (err) {
-            return res.status(err.code || 500).json(err);
+        if (response.statusText !== 'OK' || !response.result) {
+            return res.json({ok: false, message: 'error occurred'});
         }
+
 
         userId = '';
         if (payload.context.metadata && payload.context.metadata.user_id) {
@@ -81,7 +93,9 @@ app.post('/api/message', function (req, res) {
             userId: userId
         };
         dashbot.logIncoming(humanMessageForDashbot);
-        return res.json(updateMessage(payload, data));
+        return res.json(updateMessage(payload, response.result));
+    }).catch(err => {
+        return res.status(err.code || 500).json(err);
     });
 });
 
@@ -117,8 +131,8 @@ function updateMessage(input, response) {
         }
 
         let watsonMessageForDashbot = {
-            text  : response.output.text[0] || {},
-            userId: userId,
+            text       : response.output.text[0] || {},
+            userId     : userId,
             intent     : {
                 name  : intent.intent || '',
                 inputs: entities
