@@ -92,7 +92,9 @@ app.post('/api/message', function (req, res) {
             text  : payload.input.text || '',
             userId: userId
         };
-        dashbot.logIncoming(humanMessageForDashbot);
+        if (userId) {
+            dashbot.logIncoming(humanMessageForDashbot);
+        }
         return res.json(updateMessage(payload, response.result));
     }).catch(err => {
         return res.status(err.code || 500).json(err);
@@ -139,7 +141,9 @@ function updateMessage(input, response) {
             },
             payloadJson: response
         };
-        dashbot.logOutgoing(watsonMessageForDashbot);
+        if (userId) {
+            dashbot.logOutgoing(watsonMessageForDashbot);
+        }
         return response;
     }
     if (response.intents && response.intents[0]) {

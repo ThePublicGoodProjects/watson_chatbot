@@ -8,7 +8,7 @@ if (!process.env.WORKSPACE_ID) {
 
 var spawn = require('child_process').spawn;
 var app   = require('./app');
-var port  = 3000;
+var port  = 9000;
 
 var server = app.listen(port, function () {
     // eslint-disable-next-line no-console
