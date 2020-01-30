@@ -16,7 +16,7 @@
 /* eslint no-undef: 0 */
 
 casper.test.begin('Watson Assistant simple Demo', 5, function suite(test) {
-    var baseHost = 'http://localhost:3000';
+    var baseHost = 'http://localhost:9000';
 
     function testWelcomeMessageExists() {
         casper.waitForSelector('.from-watson', function () {
@@ -32,7 +32,7 @@ casper.test.begin('Watson Assistant simple Demo', 5, function suite(test) {
         casper.waitForSelector('.from-user', function () {
             test.assertExists('.message-inner', 'Message sent');
             test.assertTextExists('hi', 'Message in bubble');
-            casper.waitForText('Hi! I\'m Layla and I\'m here');
+            casper.waitForText('Heyyy girl! Have any questions about birth control');
         });
     }
 
